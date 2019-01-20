@@ -1,0 +1,4 @@
+- name: build_snapshot
+  service: property-catalogue
+  tag: "^(master|feature/.*)$"
+  command: echo "Building $CI_BRANCH" && make build_snapshot deploy_snapshot

@@ -1,5 +1,7 @@
 # ss_property_catalogue
 
+[![Codeship Status for impatienttraveller/ss_property_catalogue](https://app.codeship.com/projects/aff0ba30-fecb-0136-cc17-56b6e41314e7/status?branch=master)](/projects/322700)
+
 Property Catalogue: provides details about available properties
 
 ## Installation
