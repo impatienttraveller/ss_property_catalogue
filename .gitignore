@@ -1,5 +1,9 @@
+# Crystal
 /docs/
 /lib/
 /bin/
 /.shards/
 *.dwarf
+
+# VS Code
+.vscode

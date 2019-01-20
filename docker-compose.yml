@@ -1,0 +1,36 @@
+version: "3"
+
+networks:
+  app-tier:
+    driver: bridge
+
+services:
+  mongo-db:
+    image: mongo:4.1.6
+    restart: always
+    networks:
+      - app-tier
+    environment:
+      - MONGODB_USERNAME=propertycatalogue
+      - MONGODB_PASSWORD=pa55w0rd!
+      - MONGODB_DATABASE=property_catalogue
+      - MONGODB_EXTRA_FLAGS=--smallfiles --logpath=/dev/null
+    ports:
+      - 27017:27017
+    volumes:
+      - ./data/db:/bitnami
+
+  property-catalogue:
+    depends_on:
+      - mongo-db
+    networks:
+      - app-tier
+    build: .
+    image: ss_property_catalogue/dev
+    environment:
+      - SHARDS_BUILD_OPTIONS=--local
+    volumes:
+      - ./data/www:/var/www:rw
+      - /tmp/.X11-unix:/tmp/.X11-unix:rw
+    ports:
+      - 8080:80
