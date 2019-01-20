@@ -1,0 +1,13 @@
+name: ss_property_catalogue
+version: 0.1.0
+
+authors:
+  - Daniel del Castillo <dadelcas@hotmail.com>
+
+targets:
+  ss_property_catalogue:
+    main: src/ss_property_catalogue.cr
+
+crystal: 0.26.1
+
+license: MIT
