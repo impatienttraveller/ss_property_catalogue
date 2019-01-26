@@ -10,9 +10,9 @@ build_release:
 	echo "build image $(PROJECT):$(RELEASE_VERSION)"
 	docker build --build-arg SHARDS_BUILD_OPTIONS=--production --tag $(PROJECT):$(RELEASE_VERSION) .
 
-deploy_snapshot:
+push_snapshot:
 	docker push $(PROJECT):$(GIT_HASH)
 
-deploy_release:
+push_release:
 	docker push $(PROJECT):$(RELEASE_VERSION)
 

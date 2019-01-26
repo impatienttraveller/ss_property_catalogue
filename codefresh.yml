@@ -1,0 +1,55 @@
+version: "1.0"
+
+stages:
+  - prepare
+  - build
+  - test
+  - integration
+  - deploy
+
+steps:
+  preparation:
+    stage: prepare
+    description: Prepare build
+    commands:
+      - echo "Build ID is $CF_BUILD_ID"
+
+  build_snapshot:
+    stage: build
+    description: Build Docker image snpashot
+    commands:
+      - echo "Building snapshot from $CF_BRANCH" && make build_snapshot
+    when:
+      branch:
+        ignore:
+          - master
+
+  build_release:
+    stage: build
+    description: Build Docker image release
+    commands:
+      - echo "Building $CF_BRANCH" && make build_srelease
+    when:
+      branch:
+        only:
+          - master
+
+  push_snapshot:
+    stage: deploy
+    description: Push Docker image snapshot to the Docker Registry
+    commands:
+      - echo "Pushing $CF_BRANCH" && make push_snapshot
+    when:
+      branch:
+        ignore:
+          - master
+
+  push_release:
+    stage: deploy
+    description: Push Docker image release to the Docker Registry
+    commands:
+      - echo "Pushing $CF_BRANCH" && make push_release
+    when:
+      branch:
+        only:
+          - master
