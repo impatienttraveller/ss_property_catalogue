@@ -5,8 +5,7 @@ stages:
   - test
   - integration
   - deploy
-
-  steps:
+steps:
   preparation:
     stage: prepare
     description: Prepare build
