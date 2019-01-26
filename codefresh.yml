@@ -10,7 +10,7 @@ steps:
     stage: prepare
     title: Prepare build
     description: Export environment variables needed by the build
-    image: alpine
+    image: crystallang/crystal
     commands:
       - echo "Build ID is $CF_BUILD_ID"
       - cf_export PROJECT=$(basename -s .git `git config --get remote.origin.url`)
