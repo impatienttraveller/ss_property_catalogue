@@ -8,36 +8,30 @@ stages:
 steps:
   preparation:
     stage: prepare
-    description: Prepare build
+    title: Prepare build
+    description: Export environment variables needed by the build
     image: alpine
     commands:
       - echo "Build ID is $CF_BUILD_ID"
+      - cf_export PROJECT=$(basename -s .git `git config --get remote.origin.url`)
+      - cf_export GIT_HASH=$CF_REVISION
+      - cf_export RELEASE_VERSION=$(shards version .)
 
-  build_snapshot:
+  build_image:
     stage: build
-    description: Build Docker image snpashot
-    commands:
-      - echo "Building snapshot from $CF_BRANCH" && make build_snapshot
-    when:
-      branch:
-        ignore:
-          - master
-
-  build_release:
-    stage: build
-    description: Build Docker image release
-    commands:
-      - echo "Building $CF_BRANCH" && make build_srelease
-    when:
-      branch:
-        only:
-          - master
+    type: build
+    description: Build Docker image
+    image_name: impatienttraveller/${{PROJECT}}
 
   push_snapshot:
     stage: deploy
-    description: Push Docker image snapshot to the Docker Registry
-    commands:
-      - echo "Pushing $CF_BRANCH" && make push_snapshot
+    type: push
+    title: Push snapshot
+    description: Push snapshot Docker image to the Docker Registry
+    candidate: ${{build_image}}
+    tags:
+      - develop
+      - ${{GIT_HASH}}
     when:
       branch:
         ignore:
@@ -45,9 +39,13 @@ steps:
 
   push_release:
     stage: deploy
-    description: Push Docker image release to the Docker Registry
-    commands:
-      - echo "Pushing $CF_BRANCH" && make push_release
+    type: push
+    title: Push release
+    description: Push release Docker image to the Docker Registry
+    candidate: ${{build_image}}
+    tags:
+      - latest
+      - ${{RELEASE_VERSION}}
     when:
       branch:
         only:
