@@ -1,16 +1,15 @@
 version: "1.0"
-
 stages:
   - prepare
   - build
   - test
   - integration
   - deploy
-
 steps:
   preparation:
     stage: prepare
     description: Prepare build
+    image: alpine
     commands:
       - echo "Build ID is $CF_BUILD_ID"
 
